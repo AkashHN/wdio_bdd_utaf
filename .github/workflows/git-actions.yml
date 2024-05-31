@@ -27,6 +27,7 @@ jobs:
       run: |
         npm install -g appium
         appium -v
+        appium &>/dev/null &
  
     # - name: Install Appium drivers
     #   run: |
