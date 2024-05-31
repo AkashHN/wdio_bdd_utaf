@@ -91,7 +91,7 @@ exports.config = {
       // capabilities for local Appium web tests on an Android Emulator
       platformName: "Android",
       "appium:automationName": "UiAutomator2",
-      "appium:platformVersion": "11",
+      "appium:platformVersion": "10",
       "appium:deviceName": "emulator-5554",
       "appium:appPackage": "com.letyshops",
       "appium:app":path.join(process.cwd(),process.env.app),
