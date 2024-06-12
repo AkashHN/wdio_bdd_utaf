@@ -34,6 +34,7 @@ class LoginPage  {
    await this.getusernameField.setValue(username);
    await this.getpasswordField.setValue(password);
    await this.clickonLogin.click();
+   await browser.pause(10000);
   }
 
 }

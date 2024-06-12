@@ -60,6 +60,7 @@ class StorePage {
     await this.clickcloseWebBtn.click();
     await this.clickcloseWebConfirmBtn.click();
     await this.closeStoreBtn.click();
+    await this.closeStoreBtn.click();
   }
 }
 module.exports = new StorePage();

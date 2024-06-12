@@ -2,3 +2,5 @@
 .tmp
 actualImages/
 baselineImages/
+output.xlsx
+package-lock.json

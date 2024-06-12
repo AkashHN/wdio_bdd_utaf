@@ -6,6 +6,7 @@ const { Reporter } = require("@reportportal/agent-js-webdriverio");
 const RPClient = require("@reportportal/client-javascript");
 const { expect } = require("chai").expect;
 const glob = require("glob");
+const {attachImage, attachText} = require('./Utils/attachCustomScreenshot')
 let startTime;
 let endTime;
 const fs=require('fs');
@@ -236,6 +237,7 @@ exports.config = {
    */
   onPrepare: function (config, capabilities) {
     removeSync(".tmp/json/");
+    removeSync("output.xlsx");
     startTime = new Date();
   },
   /**
@@ -267,11 +269,11 @@ exports.config = {
    * @param {String} cid worker id (e.g. 0-0)
    */
   beforeSession: function (config, capabilities, specs, cid) {
-    // if (specs[0].includes("API")) {
-    //   capabilities["goog:chromeOptions"] = {
-    //     args: ["--incognito", "--headless"],
-    //   };
-    // }
+    if (specs[0].includes("API")) {
+      capabilities["goog:chromeOptions"] = {
+        args: ["--incognito", "--headless"],
+      };
+    }
   },
   /**
    * Gets executed before test execution begins. At this point you can access to all global
@@ -326,40 +328,45 @@ exports.config = {
    * @param {number}             result.duration  duration of scenario in milliseconds
    * @param {Object}             context          Cucumber World object
    */
+
   afterStep: async function (Step, Scenario, result) {
     const scenarioName = Scenario.name;
     if (!result.passed) {
-      let screenshotPath;
-      let screenshotPath_actual;
-      let screenshotPath_baseLine;
       if ( scenarioName == "Visual testing Negative case") {
-        screenshotPath_actual = path.join(
-          process.cwd(),
-          "actualImages/actual/desktop_chrome/",
-          "Image_Negative-.png"
-        );
-        screenshotPath_baseLine = path.join(
-          process.cwd(),
-          "baselineImages/desktop_chrome/",
-          "Image_Negative-.png"
-        );
-        screenshotPath = path.join(
-          process.cwd(),
-          "actualImages/diff/desktop_chrome/",
-          "Image_Negative-.png"
-        );
-        const absolutePath = path.resolve(screenshotPath);
-        const absolutePath1 = path.resolve(screenshotPath_actual);
-        const absolutePath2 = path.resolve(screenshotPath_baseLine);
-        const imageDiffScreenshot = fs.readFileSync(absolutePath, "base64");
-        const actualImgScreenshot = fs.readFileSync(absolutePath1, "base64");
-        const baselineScreenshot = fs.readFileSync(absolutePath2, "base64");
-        attach("BaseLine Image", "text/plain");
-        attach(baselineScreenshot, "image/png");
-        attach("Actual Image", "text/plain");
-        attach(actualImgScreenshot, "image/png");
-        attach("Difference we are getting while comparing Actual and Baseline images", "text/plain");
-        attach(imageDiffScreenshot, "image/png");
+        console.log("222222222222222222222222222222222222222222222222222222");
+        await attachText("BaseLine Image");
+        await attachImage("actualImages/actual/desktop_chrome/","Image_Negative-.png");
+        await attachText("Actual Image");
+        await attachImage("baselineImages/desktop_chrome/","Image_Negative-.png");
+        await attachText("Difference we are getting while comparing Actual and Baseline images")
+        await attachImage("actualImages/diff/desktop_chrome/","Image_Negative-.png");
+        // screenshotPath_actual = path.join(
+        //   process.cwd(),
+        //   "actualImages/actual/desktop_chrome/",
+        //   "Image_Negative-.png"
+        // );
+        // screenshotPath_baseLine = path.join(
+        //   process.cwd(),
+        //   "baselineImages/desktop_chrome/",
+        //   "Image_Negative-.png"
+        // );
+        // screenshotPath = path.join(
+        //   process.cwd(),
+        //   "actualImages/diff/desktop_chrome/",
+        //   "Image_Negative-.png"
+        // );
+        // const absolutePath = path.resolve(screenshotPath);
+        // const absolutePath1 = path.resolve(screenshotPath_actual);
+        // const absolutePath2 = path.resolve(screenshotPath_baseLine);
+        // const imageDiffScreenshot = fs.readFileSync(absolutePath, "base64");
+        // const actualImgScreenshot = fs.readFileSync(absolutePath1, "base64");
+        // const baselineScreenshot = fs.readFileSync(absolutePath2, "base64");
+        // attach("BaseLine Image", "text/plain");
+        // attach(baselineScreenshot, "image/png");
+        // attach("Actual Image", "text/plain");
+        // attach(actualImgScreenshot, "image/png");
+        // attach("Difference we are getting while comparing Actual and Baseline images", "text/plain");
+        // attach(imageDiffScreenshot, "image/png");
       }
       else {
         const screenshot = await browser.takeScreenshot();

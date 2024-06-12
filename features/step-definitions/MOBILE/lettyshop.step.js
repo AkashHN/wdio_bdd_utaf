@@ -13,7 +13,7 @@ Given(/^that I am navigating to the login page of the Lettyshops.com application
 
 When(/^I log in with the username and password provided$/, async() => {
 	await indexPage.LoginPage.login(process.env.correctUserName,process.env.correctPassword);
-	// await indexPage.languageSelectPage.clickSelectLanguage();
+	await indexPage.languageSelectPage.clickSelectLanguage();
 });
 
 Then(/^I search for an item$/, async() => {
@@ -25,9 +25,10 @@ Then(/^the user navigates to the Store page$/, async() => {
 });
 
 Then(/^the user modifies the Account Page$/, async() => {
-	return true;
+	await indexPage.accountPage.editProfile();
+
 });
 
 Then(/^the user logs out$/, async() => {
-	return true;
+	await indexPage.accountPage.logOut();
 });

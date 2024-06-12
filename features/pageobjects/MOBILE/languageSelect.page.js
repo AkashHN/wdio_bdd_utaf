@@ -25,7 +25,7 @@ class SelectLanguagePage {
     return $(this.locators[platform()].applyButton);
   }
   async clickSelectLanguage() {
-    await $(this.applyButton).waitForExist();
+    await this.applyButton.waitForExist();
     expect(await this.applyButton.isDisplayed()).to.be.true;
     await this.languageRadioButton.click();
     await this.selectLanguageHeading.click();

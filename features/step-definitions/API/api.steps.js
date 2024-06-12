@@ -3,6 +3,7 @@ const { assert, expect } = require("chai");
 const AuthenticationPage = require("../../../Utils/authenticationToken");
 const ApiBasePage = require("../../../Utils/apiBasePage");
 const apiData = require("../../../data/apiData.json");
+const {writeDataToExcel}=require("../../../Utils/xlsx")
 let generatedToken, newBookingId, bookingDetails;
 
 Given(/^I generate a token$/, async () => {
@@ -18,6 +19,8 @@ When(
     console.log("All bookingis's are", postedData);
     assert.equal(postedData.status, process.env.status_code);
     console.log("the particular id is", postedData.data[0].bookingid);
+    const filePath = 'output.xlsx';
+    writeDataToExcel(postedData.data, filePath,'GET');
   }
 );
 
@@ -51,6 +54,8 @@ Then(
     expect(postedData.data.booking.bookingdates).to.deep.equal(
       apiData.userData.bookingdates
     );
+    const filePath = 'output.xlsx';
+    writeDataToExcel([postedData.data], filePath,'POST');
   }
 );
 
@@ -63,6 +68,8 @@ Then(/^I can able to Update a current booking$/, async () => {
   assert.equal(UpdateData.status, process.env.status_code);
   expect(UpdateData.data.firstname).to.eq(apiData.updateData.firstname);
   expect(UpdateData.data.lastname).to.eq(apiData.updateData.lastname);
+  const filePath = 'output.xlsx';
+  writeDataToExcel(UpdateData.data, filePath,'put');
 });
 
 Then(
@@ -76,6 +83,8 @@ Then(
     assert.equal(patchedData.status, process.env.status_code);
     expect(patchedData.data.firstname).to.eq(apiData.patchData.firstname);
     expect(patchedData.data.lastname).to.eq(apiData.patchData.lastname);
+    const filePath = 'output.xlsx';
+    writeDataToExcel(patchedData.data, filePath,'Patch');
   }
 );
 
